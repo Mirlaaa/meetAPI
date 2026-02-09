@@ -6,7 +6,6 @@ CREATE TABLE IF NOT EXISTS users (
     active BOOLEAN,
     email VARCHAR(255),
     password VARCHAR(255),
-    user_roles VARCHAR(255),
 );
 
 CREATE TABLE IF NOT EXISTS topic (
