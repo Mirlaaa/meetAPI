@@ -1,6 +1,6 @@
-package br.com.amisahdev.meetAPI.dto.request;
+package br.com.amisahdev.meetAPI.dto.response;
 
-public record UserRequest(
+public record UserResponse(
         String username,
         String name,
         String password,

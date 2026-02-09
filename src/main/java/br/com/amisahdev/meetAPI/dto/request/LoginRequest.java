@@ -1,4 +1,6 @@
 package br.com.amisahdev.meetAPI.dto.request;
 
-public record LoginRequest() {
-}
+public record LoginRequest(
+        String email,
+        String password
+) {}
