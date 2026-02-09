@@ -1,0 +1,61 @@
+openapi: 3.1.0
+info:
+  title: meetAPI
+  description: Sistema de gerenciamento de eventos
+  version: 1.0.0
+  contact:
+    name: Mirla Isabel Lopes Gomes
+    url: http://amisahdev.com.br
+  license:
+    name: Copyright Mirla Lopes S/A
+
+servers:
+  - url: http://127.0.0.1:8000/
+    description: Desenvolvimento
+  - url: http://meet-api.amisahdev.com.br/
+    description: Production
+
+tags:
+  - name: Auth
+    description: Endpoints relacionados à autenticação e autorização.
+
+paths:
+  /auth:
+    post:
+      tags:
+        - Auth
+      summary: Autenticação de usuário
+      description: Endpoint para autenticação de usuário e geração de token JWT.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthRequest'
+      responses:
+        '200':
+          description: Autenticação bem-sucedida.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthRequest'
+        '401':
+          description: Credenciais inválidas.
+        '500':
+          description: Erro interno do servidor.
+
+
+components:
+  schemas:
+    AuthRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          description: Nome de usuário para autenticação.
+        password:
+          type: string
+          description: Senha do usuário.
+      required:
+        - username
+        - password
