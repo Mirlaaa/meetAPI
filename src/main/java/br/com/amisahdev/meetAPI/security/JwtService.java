@@ -58,12 +58,7 @@ public class JwtService {
     }
 
     public String extractUserID(final String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes()))
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+        return extractClaims(token).getSubject();
     }
 
     public boolean isTokenValid(final String token, final UserEntity user) {

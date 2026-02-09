@@ -28,10 +28,6 @@ public class UserService {
                 .map(userMapper::map);
     }
 
-    public Optional<UserResponse> findByUsername(final String username) {
-        return userRepository.findByUsername(username)
-                .map(userMapper::map);
-    }
 
     @Transactional
     public UserResponse createUser(UserRequest userRequest){

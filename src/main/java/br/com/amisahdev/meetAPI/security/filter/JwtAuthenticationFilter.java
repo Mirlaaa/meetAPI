@@ -49,17 +49,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         UserEntity user = userRepository.findById(userId).orElse(null);
 
         if (user != null) {
-            boolean tokenIsValid = jwtService.isTokenValid(token, user);
 
-            if  (tokenIsValid) {
-                UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(
-                                user,
-                                null,
-                                List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole()))
-                        );
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
+            UsernamePasswordAuthenticationToken authentication =
+                    new UsernamePasswordAuthenticationToken(
+                            user,
+                            null,
+                            List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole()))
+                    );
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 
         filterChain.doFilter(request, response);
