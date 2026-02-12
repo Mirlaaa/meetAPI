@@ -1,7 +1,6 @@
 package br.com.amisahdev.meetapi.controller;
 
 import br.com.amisahdev.meetapi.dto.request.EventSubscriptionRequest;
-import br.com.amisahdev.meetapi.dto.response.EventResponse;
 import br.com.amisahdev.meetapi.dto.response.EventSubscriptionResponse;
 import br.com.amisahdev.meetapi.security.AuthenticatedUser;
 import br.com.amisahdev.meetapi.service.EventSubscriptionService;
