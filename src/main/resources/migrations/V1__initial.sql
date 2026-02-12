@@ -4,10 +4,8 @@ CREATE TABLE IF NOT EXISTS users (
     created_at TIMESTAMP,
     modified_at TIMESTAMP,
     active BOOLEAN,
-    username VARCHAR(255),
     email VARCHAR(255),
     password VARCHAR(255),
-    user_roles VARCHAR(255),
 );
 
 CREATE TABLE IF NOT EXISTS topic (
