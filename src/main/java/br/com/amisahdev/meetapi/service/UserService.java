@@ -24,7 +24,7 @@ public class UserService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
-    public UserResponse findById(UUID userId) {
+    public UserResponse findById(final UUID userId) {
         return userRepository.findById(userId)
                 .map(userMapper::map)
                 .orElseThrow(UserNotFoundException::new);
