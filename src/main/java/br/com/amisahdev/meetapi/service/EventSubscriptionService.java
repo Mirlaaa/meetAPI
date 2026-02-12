@@ -42,7 +42,7 @@ public class EventSubscriptionService {
                 .stream()
                 .map(eventSubscriptionMapper::map).toList();
     };
-9
+
     @Transactional
     public EventSubscriptionResponse save(final EventSubscriptionRequest eventSubscriptionRequest, final UUID participantId) {
         final EventEntity event = eventRepository.findById(eventSubscriptionRequest.eventID())
