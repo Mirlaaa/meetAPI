@@ -3,6 +3,22 @@ volumes:
   meetapi_db: {}
 
 services:
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    depends_on:
+      - keycloak
+      - meetapi
+    networks:
+      - gateway
+
+
   keycloak-db:
     image: postgres:15
     environment:
@@ -30,7 +46,9 @@ services:
       KC_DB_USERNAME: ${KC_DB_USER}
       KC_DB_PASSWORD: ${KC_DB_PASSWORD}
       KC_HTTP_ENABLED: 'true'
-      KC_HOSTNAME: localhost
+      KC_HOSTNAME: auth.amisahdev.com.br
+      KC_PROXY: 'edge'
+      KC_PROXY_HEADERS: xforwarded
 
 
 
@@ -46,6 +64,7 @@ services:
     networks:
       - keycloak_db_net
       - spring_app
+      - gateway
 
   postgres:
     image: 'postgres:16'
@@ -80,6 +99,7 @@ services:
     networks:
       - postgres_db_app
       - spring_app
+      - gateway
     extra_hosts:
       - "localhost:host-gateway"
 
@@ -89,3 +109,4 @@ networks:
   keycloak_db_net:
   postgres_db_app:
   spring_app:
+  gateway:

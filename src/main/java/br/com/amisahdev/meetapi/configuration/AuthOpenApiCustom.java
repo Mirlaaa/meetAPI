@@ -13,8 +13,8 @@ public class AuthOpenApiCustom implements OpenApiCustomizer {
         final var securitySchemeName = "bearerAuth";
         final var securitySchemeoAuth = "oauth2";
 
-        final String authUrl = "http://localhost:8088/realms/meetAPI/protocol/openid-connect/auth";
-        final String tokenUrl = "http://localhost:8088/realms/meetAPI/protocol/openid-connect/token";
+        final String authUrl = "https://auth.amisahdev.com.br/realms/meetAPI/protocol/openid-connect/auth";
+        final String tokenUrl = "https://auth.amisahdev.com.br/realms/meetAPI/protocol/openid-connect/token";
 
         openAPI.getComponents().addSecuritySchemes(securitySchemeName,
                 new SecurityScheme()
