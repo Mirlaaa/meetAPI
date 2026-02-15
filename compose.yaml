@@ -1,7 +1,91 @@
+volumes:
+  keycloak_data: {}
+  meetapi_db: {}
+
 services:
+  keycloak-db:
+    image: postgres:15
+    environment:
+      - POSTGRES_USER=${KC_DB_USER}
+      - POSTGRES_PASSWORD=${KC_DB_PASSWORD}
+      - POSTGRES_DB=${KC_DB}
+    ports:
+      - "5431:5432"
+    volumes:
+      - keycloak_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "${KC_DB_USER}", "-d", "${KC_DB}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - keycloak_db_net
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.3.1
+    environment:
+      KC_DB: postgres
+      KC_DB_URL_HOST: keycloak-db
+      KC_DB_URL_DATABASE: ${KC_DB}
+      KC_DB_USERNAME: ${KC_DB_USER}
+      KC_DB_PASSWORD: ${KC_DB_PASSWORD}
+      KC_HTTP_ENABLED: 'true'
+      KC_HOSTNAME: localhost
+
+
+
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KC_BOOTSTRAP_ADMIN_USERNAME}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KC_BOOTSTRAP_ADMIN_PASSWORD}
+    ports:
+      - "8088:8080"
+    volumes:
+      - ./keycloak/data:/opt/keycloak/data/import
+    command: [ "start","--import-realm" ]
+    depends_on:
+      - keycloak-db
+    networks:
+      - keycloak_db_net
+      - spring_app
+
   postgres:
     image: 'postgres:16'
     env_file:
       - .env
     ports:
       - '5433:5432'
+    volumes:
+      - meetapi_db:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - postgres_db_app
+
+  meetapi:
+    build: .
+    env_file:
+      - .env
+    ports:
+      - "5000:5000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - postgres_db_app
+      - spring_app
+    extra_hosts:
+      - "localhost:host-gateway"
+
+
+
+networks:
+  keycloak_db_net:
+  postgres_db_app:
+  spring_app:

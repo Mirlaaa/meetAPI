@@ -6,8 +6,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(
-        componentModel = "spring",
-        uses = EventSubscriptionActivityMapper.class
+        componentModel = "spring"
 )
 public interface EventSubscriptionMapper {
 

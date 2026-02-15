@@ -15,7 +15,7 @@ import java.util.UUID;
 @RequestMapping("/api/activity/")
 @RequiredArgsConstructor
 public class ActivityController {
-    final private ActivityService activityService;
+    private final ActivityService activityService;
 
     @GetMapping
     public ResponseEntity<List<ActivityResponse>> getActivities() {
