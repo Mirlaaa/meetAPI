@@ -3,18 +3,21 @@ package br.com.amisahdev.meetapi.configuration;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.security.*;
 import org.springdoc.core.customizers.OpenApiCustomizer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AuthOpenApiCustom implements OpenApiCustomizer {
+    @Value("${spring.doc.auth.url}")
+    private String authUrl;
+
+    @Value("${spring.doc.token.url}")
+    private String tokenUrl;
 
     @Override
     public void customise(final OpenAPI openAPI) {
         final var securitySchemeName = "bearerAuth";
         final var securitySchemeoAuth = "oauth2";
-
-        final String authUrl = "https://auth.amisahdev.com.br/realms/meetAPI/protocol/openid-connect/auth";
-        final String tokenUrl = "https://auth.amisahdev.com.br/realms/meetAPI/protocol/openid-connect/token";
 
         openAPI.getComponents().addSecuritySchemes(securitySchemeName,
                 new SecurityScheme()
