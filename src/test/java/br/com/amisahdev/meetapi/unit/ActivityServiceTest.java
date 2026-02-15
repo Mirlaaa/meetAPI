@@ -1,4 +1,4 @@
-package br.com.amisahdev.meetapi;
+package br.com.amisahdev.meetapi.unit;
 
 
 public class ActivityServiceTest {

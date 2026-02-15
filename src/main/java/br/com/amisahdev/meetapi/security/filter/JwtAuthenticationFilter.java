@@ -45,6 +45,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         final AuthenticatedUser authenticatedUser = new AuthenticatedUser(
                 userId,
+                null,
                 email
         );
 
