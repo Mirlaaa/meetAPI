@@ -1,6 +1,5 @@
 package br.com.amisahdev.meetapi.controller;
 
-import br.com.amisahdev.meetapi.dto.request.UserRequest;
 import br.com.amisahdev.meetapi.dto.response.UserResponse;
 import br.com.amisahdev.meetapi.security.AuthenticatedUser;
 import br.com.amisahdev.meetapi.service.UserService;
@@ -21,11 +20,6 @@ public class UserController {
     @GetMapping("me/")
     private ResponseEntity<UserResponse> getMe(final @AuthenticationPrincipal AuthenticatedUser userPrincipal) {
         return ResponseEntity.ok().body(userService.findById(userPrincipal.id()));
-    }
-
-    @PostMapping
-    public ResponseEntity<UserResponse> createUser(final @RequestBody UserRequest user) {
-        return ResponseEntity.ok().body(userService.createUser(user));
     }
 
     @DeleteMapping
