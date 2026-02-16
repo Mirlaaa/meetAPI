@@ -1,5 +1,4 @@
 name: deploy.yml
-
 on:
   push:
     branches: ["main"]
