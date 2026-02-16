@@ -23,11 +23,6 @@ public class UserController {
         return ResponseEntity.ok().body(userService.findById(userPrincipal.id()));
     }
 
-    @PostMapping
-    public ResponseEntity<UserResponse> createUser(final @RequestBody UserRequest user) {
-        return ResponseEntity.ok().body(userService.createUser(user));
-    }
-
     @DeleteMapping
     public ResponseEntity<UserResponse> deleteUser(final @AuthenticationPrincipal AuthenticatedUser userPrincipal) {
         return ResponseEntity.ok().body(userService.delete(userPrincipal.id()));
