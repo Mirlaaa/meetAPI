@@ -1,5 +1,4 @@
 name: deploy.yml
-
 on:
   push:
     branches: ["main"]
@@ -19,8 +18,6 @@ jobs:
            set -e
            cd ~/meetAPI
          
-           java -version
-           mvn -v
            git stash
            git checkout main
            git pull origin main
@@ -32,6 +29,5 @@ jobs:
            echo "${{ secrets.ENV_FILE }}" > .env
            echo "Arquivo .env criado com sucesso"
          
-           docker-compose -f compose-prod down && docker-compose  -f compose-prod build --no-cache
-           docker-compose -f compose-prod up -d
+           docker-compose -f compose-prod down && docker-compose  -f compose-prod up -d --build
          EOF
