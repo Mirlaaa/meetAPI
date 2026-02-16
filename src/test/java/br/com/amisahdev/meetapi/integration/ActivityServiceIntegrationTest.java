@@ -47,40 +47,40 @@ class ActivityServiceIntegrationTest {
 
     @Test
     void shouldSaveActivity() {
-        ActivityRequest request = new ActivityRequest(
+        final ActivityRequest request = new ActivityRequest(
                 "Integration Activity",
                 "Integration Desc",
                 eventId
         );
 
-        ActivityResponse response = activityService.save(request);
+        final ActivityResponse response = activityService.save(request);
 
         assertNotNull(response);
         assertEquals("Integration Activity", response.title());
         assertEquals(eventId, response.eventId());
 
-        var saved = activityRepository.findById(response.id());
+        final var saved = activityRepository.findById(response.id());
         assertTrue(saved.isPresent());
         assertEquals("Integration Activity", saved.get().getTitle());
     }
 
     @Test
     void shouldFindAllByEventId() {
-        ActivityRequest request = new ActivityRequest(
+        final ActivityRequest request = new ActivityRequest(
                 "Activity 1",
                 "Desc",
                 eventId
         );
         activityService.save(request);
 
-        List<ActivityResponse> activities = activityService.findAllByEventId(eventId);
+        final List<ActivityResponse> activities = activityService.findAllByEventId(eventId);
         assertEquals(1, activities.size());
         assertEquals("Activity 1", activities.get(0).title());
     }
 
     @Test
     void shouldThrowExceptionForInvalidEvent() {
-        ActivityRequest request = new ActivityRequest(
+        final ActivityRequest request = new ActivityRequest(
                 "Activity X",
                 "Desc",
                 UUID.randomUUID()

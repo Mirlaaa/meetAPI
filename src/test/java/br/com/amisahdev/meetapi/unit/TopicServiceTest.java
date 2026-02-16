@@ -58,7 +58,7 @@ class TopicServiceTest {
         when(topicRepository.findAll()).thenReturn(List.of(topicEntity));
         when(topicMapper.map(topicEntity)).thenReturn(topicResponse);
 
-        List<TopicResponse> result = topicService.findAll();
+        final List<TopicResponse> result = topicService.findAll();
 
         assertEquals(1, result.size());
         assertEquals(topicResponse, result.get(0));
@@ -71,7 +71,7 @@ class TopicServiceTest {
         when(topicRepository.findById(topicId)).thenReturn(Optional.of(topicEntity));
         when(topicMapper.map(topicEntity)).thenReturn(topicResponse);
 
-        TopicResponse result = topicService.findById(topicId);
+        final TopicResponse result = topicService.findById(topicId);
 
         assertEquals(topicResponse, result);
         verify(topicRepository, times(1)).findById(topicId);
@@ -90,7 +90,7 @@ class TopicServiceTest {
         when(topicRepository.findByTitle("java")).thenReturn(Optional.of(topicEntity));
         when(topicMapper.map(topicEntity)).thenReturn(topicResponse);
 
-        Optional<TopicResponse> result = topicService.findByTitle("java");
+        final Optional<TopicResponse> result = topicService.findByTitle("java");
 
         assertTrue(result.isPresent());
         assertEquals(topicResponse, result.get());
@@ -99,20 +99,20 @@ class TopicServiceTest {
 
     @Test
     void shouldSaveNewTopic() {
-        TopicRequest request = new TopicRequest("Spring Boot");
+        final TopicRequest request = new TopicRequest("Spring Boot");
 
-        TopicEntity newTopicEntity = TopicEntity.builder()
+        final TopicEntity newTopicEntity = TopicEntity.builder()
                 .title("spring boot")
                 .active(true)
                 .build();
 
-        TopicResponse newTopicResponse = new TopicResponse(UUID.randomUUID(), "Spring boot");
+        final TopicResponse newTopicResponse = new TopicResponse(UUID.randomUUID(), "Spring boot");
 
         when(topicRepository.findByTitleEqualsIgnoreCase("spring boot")).thenReturn(Optional.empty());
         when(topicRepository.save(any(TopicEntity.class))).thenReturn(newTopicEntity);
         when(topicMapper.map(newTopicEntity)).thenReturn(newTopicResponse);
 
-        TopicResponse result = topicService.save(request);
+        final TopicResponse result = topicService.save(request);
 
         assertEquals(newTopicResponse, result);
         verify(topicRepository, times(1)).save(any(TopicEntity.class));
@@ -120,12 +120,12 @@ class TopicServiceTest {
 
     @Test
     void shouldReturnExistingTopicOnSaveIfExists() {
-        TopicRequest request = new TopicRequest("java");
+        final TopicRequest request = new TopicRequest("java");
 
         when(topicRepository.findByTitleEqualsIgnoreCase("java")).thenReturn(Optional.of(topicEntity));
         when(topicMapper.map(topicEntity)).thenReturn(topicResponse);
 
-        TopicResponse result = topicService.save(request);
+        final TopicResponse result = topicService.save(request);
 
         assertEquals(topicResponse, result);
         verify(topicRepository, never()).save(any());
@@ -133,19 +133,19 @@ class TopicServiceTest {
 
     @Test
     void shouldUpdateTopicWhenExists() {
-        TopicRequest request = new TopicRequest("JAVA UPDATED");
-        TopicEntity updatedEntity = TopicEntity.builder()
+        final TopicRequest request = new TopicRequest("JAVA UPDATED");
+        final TopicEntity updatedEntity = TopicEntity.builder()
                 .id(topicId)
                 .title("java updated")
                 .active(true)
                 .build();
-        TopicResponse updatedResponse = new TopicResponse(topicId, "java updated");
+        final TopicResponse updatedResponse = new TopicResponse(topicId, "java updated");
 
         when(topicRepository.findByTitleEqualsIgnoreCase("java updated")).thenReturn(Optional.of(topicEntity));
         when(topicRepository.save(topicEntity)).thenReturn(updatedEntity);
         when(topicMapper.map(updatedEntity)).thenReturn(updatedResponse);
 
-        TopicResponse result = topicService.update(topicId, request);
+        final TopicResponse result = topicService.update(topicId, request);
 
         assertEquals(updatedResponse, result);
         verify(topicRepository, times(1)).save(topicEntity);
@@ -153,7 +153,7 @@ class TopicServiceTest {
 
     @Test
     void shouldThrowExceptionOnUpdateIfNotExists() {
-        TopicRequest request = new TopicRequest("Nonexistent");
+        final TopicRequest request = new TopicRequest("Nonexistent");
 
         when(topicRepository.findByTitleEqualsIgnoreCase("nonexistent")).thenReturn(Optional.empty());
 

@@ -27,9 +27,9 @@ public class EventController {
         return ResponseEntity.ok().body(eventService.findAll());
     }
 
-    @GetMapping("/organized/{organizerId}")
-    public ResponseEntity<List<EventResponse>> findAllEventSubscriptionsByOrganizer(final @PathVariable UUID organizerId) {
-        return ResponseEntity.ok().body(eventService.findAllByOrganizer(organizerId));
+    @GetMapping("/organized/")
+    public ResponseEntity<List<EventResponse>> findAllEventSubscriptionsByOrganizer(final @AuthenticationPrincipal AuthenticatedUser userPrincipal) {
+        return ResponseEntity.ok().body(eventService.findAllByOrganizer(userPrincipal.id()));
     }
 
     @PostMapping
