@@ -7,6 +7,7 @@ import br.com.amisahdev.meetapi.exception.UserNotFoundException;
 import br.com.amisahdev.meetapi.mapper.UserMapper;
 import br.com.amisahdev.meetapi.model.UserEntity;
 import br.com.amisahdev.meetapi.repository.UserRepository;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,6 +29,22 @@ public class UserService {
         return userRepository.findById(userId)
                 .map(userMapper::map)
                 .orElseThrow(UserNotFoundException::new);
+    }
+
+    @Transactional
+    public UserEntity getOrCreate(final Jwt jwt) {
+
+        final UUID id = UUID.fromString(jwt.getSubject());
+
+        return userRepository.findByKeycloakUserId(id)
+                .orElseGet(() -> userRepository.save(
+                        UserEntity.builder()
+                                .keycloakUserId(id)
+                                .email(jwt.getClaim("email"))
+                                .name(jwt.getClaim("name"))
+                                .active(true)
+                                .build()
+                ));
     }
 
     @Transactional

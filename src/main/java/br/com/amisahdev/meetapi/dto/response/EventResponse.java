@@ -1,6 +1,6 @@
 package br.com.amisahdev.meetapi.dto.response;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.UUID;
 
 public record EventResponse(
@@ -8,5 +8,5 @@ public record EventResponse(
     String title,
     String description,
     Boolean active,
-    Date createdAt
+    Instant createdAt
 ) { }

@@ -24,6 +24,9 @@ public class UserEntity extends AbstractEntity<UUID> implements UserDetails {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Column(unique = true, name = "keycloak_user_id")
+    private UUID keycloakUserId;
+
     private String name;
     private String password;
 

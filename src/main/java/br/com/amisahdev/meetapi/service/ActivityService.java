@@ -20,9 +20,8 @@ import java.util.UUID;
 @Transactional(readOnly = true)
 public class ActivityService {
 
-    final private ActivityEntityRepository activityEntityRepository;
+    private final ActivityEntityRepository activityEntityRepository;
     private final ActivityMapper activityMapper;
-    private final EventService eventService;
     private final EventRepository eventRepository;
 
     public List<ActivityResponse> findAll() {
