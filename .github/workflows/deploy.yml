@@ -1,0 +1,35 @@
+name: deploy.yml
+on:
+  push: ["main"]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+     - name: Create PEM file
+       run: |
+         echo "${{ secrets.EC2_SSH_KEY }}" > private-key.pem
+         chmod 600 private-key.pem
+
+     - name: Deploy to EC2 - SSH
+       run: |
+         ssh -i private-key.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_HOST }} << EOF
+           set -e
+           cd ~/meetAPI
+         
+           java -version
+           mvn -v
+           git stash
+           git checkout main
+           git pull origin main
+         
+           export JAVA_HOME=/home/ubuntu/.sdkman/candidates/java/21.0.8-amzn
+           export MAVEN_HOME=/home/ubuntu/.sdkman/candidates/maven/3.9.11
+           export PATH=$JAVA_HOME/bin:$MAVEN_HOME/bin/:$PATH
+                  
+           echo "${{ secrets.ENV_FILE }}" > .env
+           echo "Arquivo .env criado com sucesso"
+         
+           docker-compose -f compose-prod down && docker-compose  -f compose-prod build --no-cache
+           docker-compose -f compose-prod up -d
+         EOF
